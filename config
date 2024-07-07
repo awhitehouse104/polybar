@@ -32,11 +32,12 @@ separator =
 separator-foreground = ${colors.disabled}
 
 font-0 = "monospace;2"
-font-1 = "FontAwesome:style=Solid:size=13;3"
+font-1 = "FontAwesome:style=Solid:size=14;3"
+font-2 = "Weather Icons:size=13;3"
 
 modules-left = xworkspaces separator dock separator rofi-windows rofi-launcher
 modules-center = 
-modules-right = playerctl-prev playerctl playerctl-next playerctl-title separator date battery pulseaudio separator tray separator session
+modules-right = playerctl-prev playerctl playerctl-next playerctl-title separator date openweathermap separator battery pulseaudio separator tray separator session
 
 cursor-click = pointer
 cursor-scroll = ns-resize
@@ -241,6 +242,13 @@ animation-charging-framerate = 1000
 animation-low-0 = ""
 animation-low-1 = ""
 animation-low-framerate = 200
+
+[module/openweathermap]
+type = custom/script
+exec = ~/.config/polybar/scripts/openweathermap.sh
+interval = 600
+label-font = 3
+format-padding = 1
 
 [module/tray]
 type = internal/tray
