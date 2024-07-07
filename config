@@ -1,0 +1,259 @@
+[colors]
+background = #1a1b26
+background-transparent = #CC1a1b26
+background-alt = #28344a
+foreground = #a9b1d6
+primary = #7aa2f7
+secondary = #7dcfff
+success = #73daca
+alert = #f7768e
+warn = #e0af68
+disabled = #414868
+
+[bar/main]
+width = 100%
+height = 26pt
+; radius = 6
+
+background = ${colors.background-transparent}
+foreground = ${colors.foreground}
+
+line-size = 3pt
+
+; border-size = 4pt
+; border-color = #00000000
+
+padding-left = 0
+padding-right = 0
+
+module-margin = 0
+
+separator =
+separator-foreground = ${colors.disabled}
+
+font-0 = "monospace;2"
+font-1 = "FontAwesome:style=Solid:size=13;3"
+
+modules-left = xworkspaces separator dock separator rofi-windows rofi-launcher
+modules-center = 
+modules-right = playerctl-prev playerctl playerctl-next playerctl-title separator date battery pulseaudio separator tray separator session
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+enable-ipc = true
+
+[module/separator]
+type = custom/text
+format = <label>
+format-foreground = ${colors.disabled}
+format-padding = 1
+label = |
+
+[module/xworkspaces]
+type = internal/xworkspaces
+
+; Workspace labels
+label-active = %name%
+label-occupied = %name%
+label-urgent = %name%
+label-empty = %name%
+
+; Active workspace
+label-active-background = ${colors.background-alt}
+label-active-underline = ${colors.primary}
+label-active-padding-left = 1
+label-active-padding-right = 1
+
+; Occupied workspace
+label-occupied-padding-left = 1
+label-occupied-padding-right = 1
+
+; Urgent workspace
+label-urgent-background = ${colors.alert}
+label-urgent-padding-left = 1
+label-urgent-padding-right = 1
+
+; Empty workspace
+label-empty-foreground = ${colors.disabled}
+label-empty-padding-left = 1
+label-empty-padding-right = 1
+
+; Overall module settings
+format = <label-state>
+format-padding = 0
+
+[module/rofi-launcher]
+type = custom/script
+exec = echo ""
+click-left = rofi -show drun
+format-padding = 1
+
+[module/rofi-windows]
+type = custom/script
+exec = echo ""
+click-left = rofi -show window
+format-padding = 1
+
+[module/dock]
+type = custom/script
+exec = ~/.config/polybar/scripts/dock.sh
+interval = 1
+format-padding = 1
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:60:...%
+format-padding = 1
+format-underline-size = 0.5
+format-overline-size = 0.5
+
+[module/playerctl]
+type = custom/script
+exec = ~/.config/polybar/scripts/player-icon.sh
+interval = 1
+format = <label>
+format-foreground = ${colors.primary}
+click-left = playerctl play-pause
+format-padding = 1
+
+[module/playerctl-prev]
+type = custom/text
+format = ""
+format-foreground = ${colors.primary}
+click-left = playerctl previous
+format-padding = 1
+
+[module/playerctl-next]
+type = custom/text
+format = ""
+format-foreground = ${colors.primary}
+click-left = playerctl next
+format-padding = 1
+
+[module/playerctl-title]
+type = custom/script
+exec = ~/.config/polybar/scripts/player-title.sh
+interval = 1
+format = <label>
+format-foreground = ${colors.primary}
+format-padding = 1
+
+[module/pulseaudio]
+type = internal/pulseaudio
+
+format-volume = <ramp-volume> <label-volume>
+label-volume = %percentage%%
+label-muted = " muted"
+label-muted-foreground = ${colors.disabled}
+format-volume-padding = 1
+format-muted-padding = 1
+
+ramp-volume-0 = ""
+ramp-volume-1 = ""
+ramp-volume-2 = ""
+ramp-volume-3 = ""
+
+; ramp-volume-foreground = ${colors.primary}
+
+[module/date]
+type = internal/date
+interval = 1
+date = %I:%M %p
+date-alt = %m-%d-%Y %I:%M:%S %p
+label = %date%
+format-padding = 1
+
+[module/network]
+type = internal/network
+interface-type = wireless
+interface = wlo1
+interval = 3.0
+
+format-connected = %{A1:nm-connection-editor &:}<ramp-signal> <label-connected>%{A}
+format-disconnected = %{A1:nm-connection-editor &:}<label-disconnected>%{A}
+format-packetloss = %{A1:nm-connection-editor &:}<animation-packetloss> <label-connected>%{A}
+format-connected-padding = 1
+format-disconnected-padding = 1
+format-packetloss-padding = 1
+
+label-connected = %essid%
+label-connected-foreground = ${colors.primary}
+
+label-disconnected = not connected
+label-disconnected-foreground = ${colors.alert}
+
+ramp-signal-0 = ""
+ramp-signal-1 = ""
+ramp-signal-2 = ""
+ramp-signal-3 = ""
+ramp-signal-4 = ""
+ramp-signal-5 = ""
+
+animation-packetloss-0 = ""
+animation-packetloss-1 = ""
+animation-packetloss-framerate = 500
+
+; Optional: Add colors for different states
+format-connected-foreground = ${colors.primary}
+format-disconnected-foreground = ${colors.alert}
+format-packetloss-foreground = ${colors.warn}
+
+[module/battery]
+type = internal/battery
+battery = BAT0
+adapter = ADP1
+full-at = 99
+low-at = 15
+poll-interval = 5
+
+format-charging = %{A1:xfce4-power-manager-settings &:}<animation-charging> <label-charging>%{A}
+format-discharging = %{A1:xfce4-power-manager-settings &:}<ramp-capacity> <label-discharging>%{A}
+format-full = %{A1:xfce4-power-manager-settings &:}<ramp-capacity> <label-full>%{A}
+format-low = %{A1:xfce4-power-manager-settings &:}<animation-low> <label-low>%{A}
+format-charging-padding = 1
+format-discharging-padding = 1
+format-full-padding = 1
+format-low-padding = 1
+
+format-charging-foreground = ${colors.primary}
+format-full-foreground = ${colors.success}
+format-low-foreground = ${colors.alert}
+
+label-charging = %percentage%%
+label-discharging = %percentage%%
+label-full = %percentage%%
+label-low = %percentage%%
+
+ramp-capacity-0 = ""
+ramp-capacity-1 = ""
+ramp-capacity-2 = ""
+ramp-capacity-3 = ""
+ramp-capacity-4 = ""
+
+animation-charging-0 = ""
+animation-charging-1 = ""
+animation-charging-2 = ""
+animation-charging-3 = ""
+; animation-charging-4 = ""
+animation-charging-framerate = 1000
+
+animation-low-0 = ""
+animation-low-1 = ""
+animation-low-framerate = 200
+
+[module/tray]
+type = internal/tray
+format-padding = 1
+tray-spacing = 10px
+tray-foreground = ${colors.primary}
+
+[module/session]
+type = custom/script
+exec = echo ""
+click-left = xfce4-session-logout
+format-padding = 1
+
+[settings]
+screenchange-reload = true
+pseudo-transparency = true
