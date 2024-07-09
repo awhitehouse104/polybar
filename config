@@ -12,8 +12,10 @@ disabled = #414868
 
 [bar/main]
 width = 100%
-height = 26pt
+height = 28pt
 ; radius = 6
+
+bottom = false
 
 background = ${colors.background-transparent}
 foreground = ${colors.foreground}
@@ -32,7 +34,7 @@ separator =
 separator-foreground = ${colors.disabled}
 
 font-0 = "monospace;2"
-font-1 = "FontAwesome:style=Solid:size=14;3"
+font-1 = "FontAwesome:style=Solid:size=13;3"
 font-2 = "Weather Icons:size=13;3"
 
 modules-left = xworkspaces separator dock separator rofi-windows rofi-launcher
@@ -246,6 +248,7 @@ animation-low-framerate = 200
 [module/openweathermap]
 type = custom/script
 exec = ~/.config/polybar/scripts/openweathermap.sh
+click-left = ~/.config/polybar/scripts/openweathermap.sh open
 interval = 600
 label-font = 3
 format-padding = 1

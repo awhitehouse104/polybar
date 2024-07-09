@@ -43,12 +43,23 @@ get_color() {
     echo $color
 }
 
-KEY="ef4d63558f4209c8a24c2a26cdc67eab"
+KEY="116668fe41f8517668737f8a79ee4825"
 CITY="Lexington,US"
 UNITS="imperial"
 SYMBOL="°"
 
 API="https://api.openweathermap.org/data/2.5"
+
+# Function to open weather in browser
+open_weather() {
+    xdg-open "https://openweathermap.org/city/4297983" # Lexington, KY ID
+}
+
+# Check if script is called with "open" argument
+if [ "$1" = "open" ]; then
+    open_weather
+    exit 0
+fi
 
 if [ -n "$CITY" ]; then
     if [ "$CITY" -eq "$CITY" ] 2>/dev/null; then
