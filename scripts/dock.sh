@@ -7,7 +7,7 @@ apps=("firefox" "kitty" "thunar" "code" "obsidian" "spotify")
 icons=("" "" "" "" "" "")
 
 # WM_CLASS names for each application (used for more accurate window detection)
-classes=("firefox" "kitty" "Thunar" "Code" "obsidian" spotify)
+classes=("firefox" "kitty" "Thunar" "Code" "obsidian" "spotify")
 
 # Launch commands
 launch_commands=(
@@ -18,6 +18,7 @@ launch_commands=(
     "flatpak run md.obsidian.Obsidian"
     "flatpak run com.spotify.Client"
 )
+
 # Colors
 color_inactive="#414868"  # Gray for inactive apps
 color_running="#7aa2f7"   # Blue for running apps
