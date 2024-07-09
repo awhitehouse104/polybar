@@ -57,7 +57,6 @@ get_color() {
     echo $color
 }
 
-KEY="67b95c65c519c9bf77bc929d7a1157d1"
 CITY="Lexington,US"
 UNITS="imperial"
 SYMBOL="°"
@@ -82,7 +81,7 @@ if [ -n "$CITY" ]; then
         CITY_PARAM="q=$CITY"
     fi
 
-    current=$(curl -sf "$API/weather?appid=$KEY&$CITY_PARAM&units=$UNITS")
+    current=$(curl -sf "$API/weather?appid=$WEATHER_API_KEY&$CITY_PARAM&units=$UNITS")
 else
     location=$(curl -sf "https://location.services.mozilla.com/v1/geolocate?key=geoclue")
 
@@ -90,7 +89,7 @@ else
         location_lat="$(echo "$location" | jq '.location.lat')"
         location_lon="$(echo "$location" | jq '.location.lng')"
 
-        current=$(curl -sf "$API/weather?appid=$KEY&lat=$location_lat&lon=$location_lon&units=$UNITS")
+        current=$(curl -sf "$API/weather?appid=$WEATHER_API_KEY&lat=$location_lat&lon=$location_lon&units=$UNITS")
     fi
 fi
 
