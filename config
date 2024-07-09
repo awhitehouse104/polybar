@@ -164,7 +164,7 @@ ramp-volume-3 = ""
 type = internal/date
 interval = 1
 date = %I:%M %p
-date-alt = %m-%d-%Y %I:%M:%S %p
+date-alt = %m.%d.%Y %I:%M:%S %p
 label = %date%
 format-padding = 1
 
