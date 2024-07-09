@@ -1,5 +1,19 @@
 #!/bin/sh
 
+# Load environment variables from .env file
+if [ -f "$HOME/.config/polybar/.env" ]; then
+    export $(grep -v '^#' "$HOME/.config/polybar/.env" | xargs)
+else
+    echo "Error: .env file not found. Please create .env with your API key."
+    exit 1
+fi
+
+# Check if WEATHER_API_KEY is set
+if [ -z "$WEATHER_API_KEY" ]; then
+    echo "Error: WEATHER_API_KEY is not set in .env file."
+    exit 1
+fi
+
 get_icon() {
     case $1 in
         # Icons for weather-icons
@@ -43,7 +57,7 @@ get_color() {
     echo $color
 }
 
-KEY="116668fe41f8517668737f8a79ee4825"
+KEY="67b95c65c519c9bf77bc929d7a1157d1"
 CITY="Lexington,US"
 UNITS="imperial"
 SYMBOL="°"
@@ -84,5 +98,5 @@ if [ -n "$current" ]; then
     current_temp=$(echo "$current" | jq ".main.temp" | cut -d "." -f 1)
     current_icon=$(echo "$current" | jq -r ".weather[0].icon")
     color=$(get_color "$current_temp")
-    echo "%{F$color}$(get_icon "$current_icon") $current_temp$SYMBOL%{F-}"
+    echo "%{F$color}%{T4}$(get_icon "$current_icon")%{T-} $current_temp$SYMBOL%{F-}"
 fi

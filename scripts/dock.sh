@@ -4,7 +4,7 @@
 apps=("firefox" "kitty" "thunar" "code" "obsidian" "spotify")
 
 # Icons for each application (ensure these are available in your font)
-icons=("" "" "" "" "" "")
+icons=("" "" "" "" "" "")
 
 # WM_CLASS names for each application (used for more accurate window detection)
 classes=("firefox" "kitty" "Thunar" "Code" "obsidian" "spotify")
@@ -72,6 +72,17 @@ for i in "${!apps[@]}"; do
         else
             output+="%{F$color_inactive}%{A1:thunar &:}$icon%{A}%{F-}"
         fi
+    elif [ "$app" = "code" ]; then
+        # Special handling for VS Code
+        if pgrep -f "/usr/share/code/code" > /dev/null || wmctrl -l | grep -i "Visual Studio Code" > /dev/null; then
+            if [[ "$focused_class" == *"code"* ]]; then
+                output+="%{F$color_focused}%{A1:wmctrl -x -a code || $launch_command &:}$icon%{A}%{F-}"
+            else
+                output+="%{F$color_running}%{A1:wmctrl -x -a code || $launch_command &:}$icon%{A}%{F-}"
+            fi
+        else
+            output+="%{F$color_inactive}%{A1:$launch_command &:}$icon%{A}%{F-}"
+        fi
     elif pgrep -x "$app" > /dev/null || pgrep -f "$app" > /dev/null; then
         # Application is running
         if [[ "$focused_class" == *"$class"* ]]; then
@@ -84,5 +95,4 @@ for i in "${!apps[@]}"; do
         output+="%{F$color_inactive}%{A1:$launch_command &:}$icon%{A}%{F-}"
     fi
 done
-
 echo "$output"

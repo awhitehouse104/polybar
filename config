@@ -34,8 +34,9 @@ separator =
 separator-foreground = ${colors.disabled}
 
 font-0 = "monospace;2"
-font-1 = "FontAwesome:style=Solid:size=13;3"
-font-2 = "Weather Icons:size=13;3"
+font-1 = "Font Awesome 6 Free:style=Solid:size=13;3"
+font-2 = "Font Awesome 6 Brands:style=Solid:size=13;3"
+font-3 = "Weather Icons:size=13;3"
 
 modules-left = xworkspaces separator dock separator rofi-windows rofi-launcher
 modules-center = 
@@ -94,7 +95,7 @@ format-padding = 1
 
 [module/rofi-windows]
 type = custom/script
-exec = echo ""
+exec = echo ""
 click-left = rofi -show window
 format-padding = 1
 
@@ -147,7 +148,7 @@ type = internal/pulseaudio
 
 format-volume = <ramp-volume> <label-volume>
 label-volume = %percentage%%
-label-muted = " muted"
+label-muted = " 0%"
 label-muted-foreground = ${colors.disabled}
 format-volume-padding = 1
 format-muted-padding = 1
@@ -261,7 +262,7 @@ tray-foreground = ${colors.primary}
 
 [module/session]
 type = custom/script
-exec = echo ""
+exec = echo "⏻"
 click-left = xfce4-session-logout
 format-padding = 1
 
