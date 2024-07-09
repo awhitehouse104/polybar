@@ -4,7 +4,7 @@
 apps=("firefox" "kitty" "thunar" "code" "obsidian" "spotify")
 
 # Icons for each application (ensure these are available in your font)
-icons=("" "" "" "" "" "")
+icons=("" "" "" "" "" "")
 
 # WM_CLASS names for each application (used for more accurate window detection)
 classes=("firefox" "kitty" "Thunar" "Code" "obsidian" "spotify")
