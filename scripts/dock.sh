@@ -1,13 +1,10 @@
 #!/bin/bash
 
-# List of applications to monitor
+# Name should match WM_CLASS name for each application (case insensitive)
 apps=("firefox" "kitty" "thunar" "code" "obsidian" "spotify")
 
-# Icons for each application (ensure these are available in your font)
+# Icons for each application
 icons=("" "" "" "" "" "")
-
-# WM_CLASS names for each application (used for more accurate window detection)
-classes=("firefox" "kitty" "Thunar" "Code" "obsidian" "spotify")
 
 # Launch commands
 launch_commands=(
@@ -24,6 +21,20 @@ color_inactive="#414868"  # Gray for inactive apps
 color_running="#7aa2f7"   # Blue for running apps
 color_focused="#bb9af7"   # Purple for focused app
 
+# Function to generate output for running applications
+generate_running_app_output() {
+    local app="$1"
+    local icon="$2"
+    local launch_command="$3"
+    local focused_class="$4"
+    
+    if [[ "${focused_class,,}" == *"$app"* ]]; then
+        echo "%{F$color_focused}%{A1:wmctrl -x -a ${app,,} || $launch_command &:}$icon%{A}%{F-}"
+    else
+        echo "%{F$color_running}%{A1:wmctrl -x -a ${app,,} || $launch_command &:}$icon%{A}%{F-}"
+    fi
+}
+
 # Get the class of the focused window
 focused_class=$(xdotool getwindowfocus getwindowclassname)
 
@@ -31,7 +42,6 @@ output=""
 for i in "${!apps[@]}"; do
     app="${apps[$i]}"
     icon="${icons[$i]}"
-    class="${classes[$i]}"
     launch_command="${launch_commands[$i]}"
     
     # Add space before icon, but not for the first one
@@ -39,48 +49,15 @@ for i in "${!apps[@]}"; do
         output+="  "
     fi
     
-    if [ "$app" = "obsidian" ]; then
-        # Special handling for Obsidian (Flatpak)
-        if pgrep -f "md.obsidian.Obsidian" > /dev/null || wmctrl -l | grep -i "obsidian" > /dev/null; then
-            if [[ "$focused_class" == *"obsidian"* ]]; then
-                output+="%{F$color_focused}%{A1:wmctrl -x -a obsidian || $launch_command &:}$icon%{A}%{F-}"
-            else
-                output+="%{F$color_running}%{A1:wmctrl -x -a obsidian || $launch_command &:}$icon%{A}%{F-}"
-            fi
-        else
-            output+="%{F$color_inactive}%{A1:$launch_command &:}$icon%{A}%{F-}"
-        fi
-    elif [ "$app" = "spotify" ]; then
-        # Special handling for Spotify (Flatpak)
-        if pgrep -f "com.spotify.Client" > /dev/null || wmctrl -l | grep -i "spotify" > /dev/null; then
-            if [[ "$focused_class" == *"Spotify"* ]]; then
-                output+="%{F$color_focused}%{A1:wmctrl -x -a spotify || $launch_command &:}$icon%{A}%{F-}"
-            else
-                output+="%{F$color_running}%{A1:wmctrl -x -a spotify || $launch_command &:}$icon%{A}%{F-}"
-            fi
-        else
-            output+="%{F$color_inactive}%{A1:$launch_command &:}$icon%{A}%{F-}"
-        fi
-    elif [ "$app" = "thunar" ]; then
-        # Special handling for Thunar
-        if pgrep -x "thunar" > /dev/null || wmctrl -l | grep -i "thunar" > /dev/null; then
-            if [[ "$focused_class" == *"$class"* ]]; then
-                output+="%{F$color_focused}%{A1:wmctrl -x -a Thunar || thunar &:}$icon%{A}%{F-}"
-            else
-                output+="%{F$color_running}%{A1:wmctrl -x -a Thunar || thunar &:}$icon%{A}%{F-}"
-            fi
-        else
-            output+="%{F$color_inactive}%{A1:thunar &:}$icon%{A}%{F-}"
-        fi
-   elif pgrep -x "$app" > /dev/null || pgrep -f "$app" > /dev/null; then
-        # Application is running
-        if [[ "$focused_class" == *"$class"* ]]; then
-            output+="%{F$color_focused}%{A1:wmctrl -x -a $class || $launch_command &:}$icon%{A}%{F-}"
-        else
-            output+="%{F$color_running}%{A1:wmctrl -x -a $class || $launch_command &:}$icon%{A}%{F-}"
-        fi
+   if [ "${app,,}" = "obsidian" ] && pgrep -f "md.obsidian.Obsidian" > /dev/null; then
+        output+=$(generate_running_app_output "$app" "$icon" "$launch_command" "$focused_class")
+    elif [ "${app,,}" = "spotify" ] && pgrep -f "com.spotify.Client" > /dev/null; then
+        output+=$(generate_running_app_output "$app" "$icon" "$launch_command" "$focused_class")
+    elif [ "${app,,}" = "thunar" ] && wmctrl -l | grep -i "${app,,}" > /dev/null; then
+        output+=$(generate_running_app_output "$app" "$icon" "$launch_command" "$focused_class")
+    elif pgrep -x "${app,,}" > /dev/null || pgrep -f "${app,,}" > /dev/null || wmctrl -l | grep -i "${app,,}" > /dev/null; then
+        output+=$(generate_running_app_output "$app" "$icon" "$launch_command" "$focused_class")
     else
-        # Application is not running
         output+="%{F$color_inactive}%{A1:$launch_command &:}$icon%{A}%{F-}"
     fi
 done
