@@ -8,7 +8,7 @@ secondary = #7dcfff
 success = #73daca
 alert = #f7768e
 warn = #e0af68
-disabled = #414868
+disabled = #545c7e
 
 [bar/main]
 width = 100%
