@@ -244,7 +244,7 @@ animation-charging-framerate = 1000
 
 animation-low-0 = ""
 animation-low-1 = ""
-animation-low-framerate = 200
+animation-low-framerate = 1000
 
 [module/openweathermap]
 type = custom/script

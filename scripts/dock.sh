@@ -1,17 +1,16 @@
 #!/bin/bash
 
 # Name should match WM_CLASS name for each application (case insensitive)
-apps=("firefox" "kitty" "thunar" "code" "obsidian" "spotify")
+apps=("firefox" "kitty" "thunar" "obsidian" "spotify")
 
 # Icons for each application
-icons=("" "" "" "" "" "")
+icons=("" "" "" "" "")
 
 # Launch commands
 launch_commands=(
     "firefox"
     "kitty"
     "thunar"
-    "code"
     "flatpak run md.obsidian.Obsidian"
     "flatpak run com.spotify.Client"
 )
